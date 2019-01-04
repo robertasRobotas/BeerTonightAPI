@@ -9,6 +9,11 @@ module.exports.NEW_USER = (req, res, next) => {
 
     const password = req.body.password;
 
+console.log(req.body.name);
+console.log(req.body.email);
+console.log(req.body.password);
+
+
     bcrypt.genSalt(10, function (err, salt) {
         bcrypt.hash(password, salt, function (err, hash) {
 
@@ -23,7 +28,7 @@ module.exports.NEW_USER = (req, res, next) => {
 
 
                 user.save().then(
-                    res.status(201).json({
+                     res.status(201).json({
                         message: "New user saved"
                     })
                 ).catch(err => {

@@ -16,12 +16,15 @@ module.exports.GET_BEER_STATUS = (req, res) => {
 
 module.exports.CHANGE_BEER_STATUS = (req, res) => {
 
-    User.updateOne(
+    User.findOne({_id: req.body.userID})
+    .then(user=>{
+
+User.updateOne(
         {
             _id: req.body.userID
         },
         {
-            beerTonight: true
+            beerTonight: !user.beerTonight
         })
         .then(user => {
 
@@ -31,6 +34,11 @@ module.exports.CHANGE_BEER_STATUS = (req, res) => {
             });
 
         });
+
+
+    });
+
+    
 
 
     setTimeout(() => {
