@@ -53,7 +53,7 @@ User.updateOne(
             }).then(res.status(200))
 
 
-    }, 30000000);
+    }, 32000000);
 
 
 };

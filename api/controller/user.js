@@ -51,6 +51,7 @@ module.exports.LOGIN = (req, res, next) => {
 
             bcrypt.compare(req.body.password, user.password).then((succ) => {
 
+                if(succ){
 
                 const token = jwt.sign({
                         email: user.email,
@@ -73,7 +74,7 @@ module.exports.LOGIN = (req, res, next) => {
                 });
             });
 
-
+        }
 
 
         })
