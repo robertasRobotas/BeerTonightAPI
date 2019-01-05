@@ -51,7 +51,12 @@ module.exports.LOGIN = (req, res, next) => {
 
             bcrypt.compare(req.body.password, user.password).then((succ) => {
 
-                if(succ){
+            if(!succ){
+                res.status(500).json({
+                    message : "bad email or name",
+                });
+            }
+            else{
 
                 const token = jwt.sign({
                         email: user.email,
@@ -67,14 +72,14 @@ module.exports.LOGIN = (req, res, next) => {
 
                 console.log(token);
 
-
+            }
 
                 res.status(200).json({
                     token : token
                 });
             });
 
-        }
+
 
 
         })
