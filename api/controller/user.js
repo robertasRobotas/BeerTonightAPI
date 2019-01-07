@@ -70,7 +70,6 @@ module.exports.LOGIN = (req, res, next) => {
                             algorithm: 'RS256'
                         });
 
-                    console.log(token);
 
 
                     res.status(200).json({
@@ -91,8 +90,8 @@ module.exports.LOGIN = (req, res, next) => {
 
         })
         .catch(err => {
-            res.status(500).json({
-                message: "error",
+            res.status(401).json({
+                message: "Bad password or email",
                 err: err
             });
         });
