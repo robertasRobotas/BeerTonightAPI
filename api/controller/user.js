@@ -9,10 +9,6 @@ module.exports.NEW_USER = (req, res, next) => {
 
     const password = req.body.password;
 
-console.log(req.body.name);
-console.log(req.body.email);
-console.log(req.body.password);
-
 
     bcrypt.genSalt(10, function (err, salt) {
         bcrypt.hash(password, salt, function (err, hash) {
@@ -28,7 +24,7 @@ console.log(req.body.password);
 
 
                 user.save().then(
-                     res.status(201).json({
+                    res.status(201).json({
                         message: "New user saved"
                     })
                 ).catch(err => {
@@ -42,58 +38,65 @@ console.log(req.body.password);
 };
 
 
-
 module.exports.LOGIN = (req, res, next) => {
 
-    User.findOne({email : req.body.email})
-        .then(user=>{
 
+    if(req.body.email.length === 0 || req.body.password.length === 0){
+
+            res.status(401).json({
+                        message: "Bad password or email",
+                    });
+
+    }else{
+
+    User.findOne({email: req.body.email})
+        .then(user => {
+
+            console.log(user);
 
             bcrypt.compare(req.body.password, user.password).then((succ) => {
 
-            if(succ){
+                if (succ) {
 
-                const token = jwt.sign({
-                        email: user.email,
-                        userId: user._id
-                    },
-                    'password',
-                    {
-                        expiresIn: '1h'
-                    },
-                    {
-                        algorithm: 'RS256'
+                    const token = jwt.sign({
+                            email: user.email,
+                            userId: user._id
+                        },
+                        'password',
+                        {
+                            expiresIn: '1h'
+                        },
+                        {
+                            algorithm: 'RS256'
+                        });
+
+                    console.log(token);
+
+
+                    res.status(200).json({
+                        token: token
                     });
 
-                console.log(token);
 
+                } else {
 
-
-                res.status(200).json({
-                    token : token
-                });
-
-
-            } else{
-                res.status(500).json({
-                    message : "error",
-                    err : err
-                });
-            }
-
+                    res.status(401).json({
+                        message: "Bad password or email",
+                    });
+                }
 
 
             });
-
-
 
 
         })
-        .catch(err=>{
+        .catch(err => {
             res.status(500).json({
-                message : "error",
-                err : err
+                message: "error",
+                err: err
             });
         });
+
+    }
 
 };
