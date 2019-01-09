@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 
 const User = require('../modles/user');
-const verifyUser = require('../auth');
+const verifyUser = require('../middleware/auth');
 
 const BeerController = require('../controller/beer');
 
